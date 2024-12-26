@@ -5,6 +5,7 @@ public class HashTable<K, V> {
     public int capacity;
     public int size;
 
+    @SuppressWarnings("unchecked")
     public HashTable(int capacity) {
         this.capacity = capacity;
         this.buckets = new LinkedList[capacity];
@@ -22,63 +23,61 @@ public class HashTable<K, V> {
 
     // Add a key-value pair
     public void put(K key, V value) {
-    int bucketIndex = getBucketIndex(key);
-    LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
+        int bucketIndex = getBucketIndex(key);
+        LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
 
-    Node<HashNode<K, V>> current = bucket.head;
-    while (current != null) {
-        if (current.data.key.equals(key)) {
-            current.data.value = value; // Update existing key's value
-            return;
+        Node<HashNode<K, V>> current = bucket.head;
+        while (current != null) {
+            if (current.data.key.equals(key)) {
+                current.data.value = value; // Update existing key's value
+                return;
+            }
+            current = current.next;
         }
-        current = current.next;
+
+        // If key doesn't exist, add a new node
+        bucket.add(new HashNode<>(key, value));
+        size++;
     }
-
-    // If key doesn't exist, add a new node
-    bucket.add(new HashNode<>(key, value));
-    size++;
-}
-
 
     // Retrieve a value by key
     public V get(K key) {
-    int bucketIndex = getBucketIndex(key);
-    LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
+        int bucketIndex = getBucketIndex(key);
+        LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
 
-    Node<HashNode<K, V>> current = bucket.head;
-    while (current != null) {
-        if (current.data.key.equals(key)) {
-            return current.data.value;
+        Node<HashNode<K, V>> current = bucket.head;
+        while (current != null) {
+            if (current.data.key.equals(key)) {
+                return current.data.value;
+            }
+            current = current.next;
         }
-        current = current.next;
+        return null; // Key not found
     }
-    return null; // Key not found
-}
-
 
     // Remove a key-value pair by key
     public boolean remove(K key) {
-    int bucketIndex = getBucketIndex(key);
-    LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
+        int bucketIndex = getBucketIndex(key);
+        LinkedList<HashNode<K, V>> bucket = buckets[bucketIndex];
 
-    Node<HashNode<K, V>> current = bucket.head;
-    Node<HashNode<K, V>> previous = null;
+        Node<HashNode<K, V>> current = bucket.head;
+        Node<HashNode<K, V>> previous = null;
 
-    while (current != null) {
-        if (current.data.key.equals(key)) {
-            if (previous == null) { // Removing the head
-                bucket.head = current.next;
-            } else {
-                previous.next = current.next;
+        while (current != null) {
+            if (current.data.key.equals(key)) {
+                if (previous == null) { // Removing the head
+                    bucket.head = current.next;
+                } else {
+                    previous.next = current.next;
+                }
+                size--;
+                return true;
             }
-            size--;
-            return true;
+            previous = current;
+            current = current.next;
         }
-        previous = current;
-        current = current.next;
+        return false; // Key not found
     }
-    return false; // Key not found
-}
 
     // Get the size of the hash table
     public int size() {
@@ -90,5 +89,3 @@ public class HashTable<K, V> {
         return size == 0;
     }
 }
-
-

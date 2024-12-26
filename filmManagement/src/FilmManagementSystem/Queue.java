@@ -36,9 +36,10 @@ public class Queue<T> {
         size--;
         return data;
     }
-    
+
     public void remove(T film) {
-        if (front == null) return;
+        if (front == null)
+            return;
 
         if (front.data.equals(film)) {
             front = front.next;
@@ -59,16 +60,19 @@ public class Queue<T> {
     public boolean isEmpty() {
         return size == 0;
     }
-    public void printQueue(){
-        
+
+    public void printQueue() {
+
         if (!isEmpty()) {
+
+            @SuppressWarnings("rawtypes")
             Node current = front;
             while (current != null) {
                 System.out.println(current.data + (current.next != null ? "" : ""));
                 current = current.next;
             }
             System.out.println();
-       }
+        }
     }
 
 }

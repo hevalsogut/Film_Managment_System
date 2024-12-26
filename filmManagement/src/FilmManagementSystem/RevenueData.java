@@ -15,5 +15,3 @@ public class RevenueData {
         return filmName + ": $" + revenue;
     }
 }
-
-

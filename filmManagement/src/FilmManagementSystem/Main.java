@@ -13,6 +13,30 @@ public class Main {
         RevenueSimulation revenueSimulation = new RevenueSimulation(10);
         ViewerFeedbackSystem viewerFeedbackSystem = new ViewerFeedbackSystem(10);
 
+        Actor actor1 = new Actor("Leonardo DiCaprio", 1);
+        Actor actor2 = new Actor("Emma Stone", 2);
+        Actor actor3 = new Actor("Dwayne Johnson", 3);
+        Actor actor4 = new Actor("Scarlett Johansson", 4);
+        Actor actor5 = new Actor("Tom Hanks", 5);
+
+        film1.addActor(actor1);
+        film1.addActor(actor2);
+        film1.addActor(actor3);
+
+        film2.addActor(actor2);
+        film2.addActor(actor3);
+        film2.addActor(actor4);
+
+        film3.addActor(actor1);
+        film3.addActor(actor4);
+        film3.addActor(actor5);
+
+        film4.addActor(actor2);
+        film4.addActor(actor1);
+
+        film5.addActor(actor5);
+        film5.addActor(actor3);
+
         // Schedule films for screening
         revenueSimulation.scheduleFilm(film1);
         revenueSimulation.scheduleFilm(film2);
