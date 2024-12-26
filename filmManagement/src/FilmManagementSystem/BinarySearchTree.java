@@ -54,5 +54,47 @@ public class BinarySearchTree {
             printInOrderRecursive(root.right);
         }
     }
+    
+    // Silme fonksiyonu BST'de film nesnesini silmek için
+    public void removeFilmFromBST(Film film) {
+    root = removeRecursive(root, film); // root BSTNode türünde olmalı
+}
+
+    private BSTNode removeRecursive(BSTNode current, Film film) {
+    if (current == null) {
+        return null;
+    }
+
+    // Film küçükse soldan sil
+    if (film.getUniqueFilmID() < current.film.getUniqueFilmID()) {
+        current.left = removeRecursive(current.left, film);
+    } 
+    // Film büyükse sağdan sil
+    else if (film.getUniqueFilmID() > current.film.getUniqueFilmID()) {
+        current.right = removeRecursive(current.right, film);
+    } 
+    // Film bulundu
+    else {
+        // Düğümde tek bir çocuk varsa
+        if (current.left == null) {
+            return current.right;
+        } else if (current.right == null) {
+            return current.left;
+        }
+
+        // Her iki çocuk varsa, en küçük öğeyi bulup yerleştir
+        Film smallestFilm = findSmallestFilm(current.right);
+        current.film = smallestFilm;
+        current.right = removeRecursive(current.right, smallestFilm);
+    }
+
+    return current;
+}
+
+    private Film findSmallestFilm(BSTNode root) {
+    return root.left == null ? root.film : findSmallestFilm(root.left);
+}
+
+
 }
 

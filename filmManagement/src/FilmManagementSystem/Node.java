@@ -1,7 +1,7 @@
 package FilmManagementSystem;
 
 public class Node<T> {
-    // Node method for LinkedList,Stack,Queue
+    //Node method for LinkedList,Stack,Queue
     T data;
     Node<T> next;
 

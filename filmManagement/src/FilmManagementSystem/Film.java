@@ -11,17 +11,23 @@ public class Film {
     private double ticketPrice;
     private LinkedList<Review> reviews; // LinkedList to store reviews
 
-    public Film(String filmName, int uniqueFilmID, String genre, int releaseYear, double totalRevenue, int viewerCount,
-            double ticketPrice) {
+    public Film(String filmName, int uniqueFilmID, String genre, int releaseYear,
+            double totalRevenue, int viewerCount, double ticketPrice) {
         this.filmName = filmName;
         this.uniqueFilmID = uniqueFilmID;
-        this.actorList = new LinkedList<>();
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.totalRevenue = totalRevenue;
         this.viewerCount = viewerCount;
         this.ticketPrice = ticketPrice;
-        this.reviews = new LinkedList<>(); // Initialize reviews list
+        this.actorList = new LinkedList<>();
+        this.reviews = new LinkedList<>();
+    }
+
+    public void delete(ViewerFeedbackSystem feedbackSystem) {
+        feedbackSystem.removeFilmFromDatabase(this.uniqueFilmID); // Remove from filmDatabase
+        feedbackSystem.removeFilmFromRanking(this); // Remove from popularityRanking
+        System.out.println("Film '" + filmName + "' has been deleted.");
     }
 
     // Add an actor to the film's actor list
@@ -65,34 +71,25 @@ public class Film {
         this.getReviews().add(review); // Add the review to the film's review list
     }
 
+    // Display film details
     public void displayFilmDetails() {
-        System.out.println("======================== Film Details ========================");
-        System.out.println("Film Name: " + filmName);
-        System.out.println("Film ID: " + uniqueFilmID);
-        System.out.println("Genre: " + genre);
-        System.out.println("Release Year: " + releaseYear);
-        System.out.printf("Total Revenue: $%,.2f\n", getTotalRevenue());
-        System.out.println("--------------------------------------------------------------");
-
+        System.out.println("Film Name: " + getFilmName());
+        System.out.println("Film ID: " + getUniqueFilmID());
+        System.out.println("Genre: " + getGenre());
+        System.out.println("Release Year: " + getReleaseYear());
+        System.out.println("Total Revenue: $" + getTotalRevenue());
         System.out.print("Actors: ");
-        Node<Actor> currentActor = actorList.head;
-        while (currentActor != null) {
-            System.out.print("Actor: " + currentActor.data.getActorName());
-            if (currentActor.next != null) {
-                System.out.print(" -> ");
-            }
-            currentActor = currentActor.next;
-        }
-        System.out.println("\n===============================================================");
+        getActorList().display();
+    }
+
+    // Update the total revenue after a screening
+    public void updateRevenue() {
+        totalRevenue += viewerCount * ticketPrice; // Increase the revenue based on viewers and ticket price
     }
 
     @Override
     public String toString() {
         return "Film: " + filmName + " (" + releaseYear + "), Genre: " + genre;
-    }
-
-    public void calculateTotalRevenue() {
-        this.totalRevenue = this.ticketPrice * this.viewerCount;
     }
 
     public String getFilmName() {
@@ -116,7 +113,6 @@ public class Film {
     }
 
     public double getTotalRevenue() {
-        calculateTotalRevenue();
         return totalRevenue;
     }
 
@@ -154,12 +150,10 @@ public class Film {
 
     public void setViewerCount(int viewerCount) {
         this.viewerCount = viewerCount;
-        calculateTotalRevenue();
     }
 
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
-        calculateTotalRevenue();
     }
 
     public LinkedList<Review> getReviews() {

@@ -4,7 +4,7 @@ public class Actor {
     public String actorName;
     public int uniqueActorID;
     public LinkedList<Film> filmsParticipated;
-
+    
     public Actor(String actorName, int uniqueActorID) {
         this.actorName = actorName;
         this.uniqueActorID = uniqueActorID;
@@ -17,6 +17,12 @@ public class Actor {
             filmsParticipated.add(film);
         }
     }
+    
+    // Aktörün film listesinde bir filmi siler
+    public void removeFilm(Film film) {
+        filmsParticipated.delete(film);  // Film'i listeden siler
+        System.out.println(film.getFilmName() + " has been removed from " + actorName + "'s films.");
+    }
 
     // Update actor profile
     public void updateActorProfile(String newActorName) {
@@ -25,27 +31,17 @@ public class Actor {
         }
     }
 
-    public void printActorDetails() {
-        if (actors == null || actors.isEmpty()) {
-            System.out.println("No actors available.");
-            return;
-        }
-
-        System.out.print("Actors: ");
-        for (int i = 0; i < actors.size(); i++) {
-            if (actors.get(i) != null) {
-                System.out.print("Actor: " + actors.get(i).getActorName());
-                if (i != actors.size() - 1) {
-                    System.out.print(" -> ");
-                }
-            }
-        }
-        System.out.println(); // Ensure a new line after the actor list.
+    // Display actor details
+    public void displayActorDetails() {
+        System.out.println("Actor Name: " + actorName);
+        System.out.println("Actor ID: " + uniqueActorID);
+        System.out.print("Films Participated: ");
+        filmsParticipated.display();
     }
-
+    
     @Override
     public String toString() {
-        return "Actor: " + actorName;
+        return actorName;
     }
 
     public String getActorName() {
@@ -59,5 +55,4 @@ public class Actor {
     public LinkedList<Film> getFilmsParticipated() {
         return filmsParticipated;
     }
-
 }

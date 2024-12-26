@@ -64,10 +64,13 @@ public class LinkedList<T> {
     public void display() {
         Node<T> current = head;
         while (current != null) {
-            System.out.print(current.data + " -> ");
+            System.out.print(current.data + "");
+            if (current.next != null) {
+                System.out.print(" -> ");
+            }
             current = current.next;
         }
-        System.out.println("null");
+        System.out.println();
     }
 
     // Get the size of the linked list
@@ -75,6 +78,7 @@ public class LinkedList<T> {
         return size;
     }
 
+    // Sort the list using a comparator
     public void sort(Comparator<T> comparator) {
         if (head == null || head.next == null) {
             return; // List is empty or has only one element
@@ -99,10 +103,12 @@ public class LinkedList<T> {
         } while (swapped);
     }
 
-    interface Comparator<T> {
+    // Comparator interface since we can't import
+    public interface Comparator<T> {
         int compare(T o1, T o2);
     }
 
+    // Get an element at a specific index
     public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -119,7 +125,6 @@ public class LinkedList<T> {
             currentIndex++;
         }
 
-        return null; // Bu satır teorik olarak hiçbir zaman çalışmaz
+        return null; // This line theoretically never reaches
     }
-
 }

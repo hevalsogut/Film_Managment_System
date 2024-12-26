@@ -1,7 +1,5 @@
 package FilmManagementSystem;
 
-import java.text.DecimalFormat;
-
 public class ViewerFeedbackSystem {
     private HashTable<Integer, Film> filmDatabase;
     private LinkedList<Film> popularityRanking;
@@ -19,6 +17,15 @@ public class ViewerFeedbackSystem {
         } else {
             System.out.println("Invalid film.");
         }
+    }
+
+    public void removeFilmFromDatabase(int uniqueFilmID) {
+        filmDatabase.remove(uniqueFilmID);
+    }
+
+    // Method to remove film from the popularity ranking (linked list)
+    public void removeFilmFromRanking(Film film) {
+        popularityRanking.delete(film);
     }
 
     public Film getFilm(int uniqueFilmID) {
@@ -39,30 +46,10 @@ public class ViewerFeedbackSystem {
     public void displayFilmDetails(int uniqueFilmID) {
         Film film = getFilm(uniqueFilmID);
         if (film != null) {
-            System.out.println("\n======================== Film Details ========================");
-            System.out.printf("Film Name: %-30s | Film ID: %-4d | Genre: %-15s | Release Year: %-4d\n",
-                    film.getFilmName(), film.getUniqueFilmID(), film.getGenre(), film.getReleaseYear());
-            System.out.printf("Total Revenue: $%-10s\n", formatRevenue(film.getTotalRevenue()));
-            System.out.println("---------------------------------------------------------------");
-            System.out.print("Actors: ");
-            Node<Actor> currentActor = film.getActorList().head;
-            while (currentActor != null) {
-                System.out.print(currentActor.data.getActorName());
-                if (currentActor.next != null) {
-                    System.out.print(" -> ");
-                }
-                currentActor = currentActor.next;
-            }
-            System.out.println("\n===============================================================");
+            film.displayFilmDetails();
         } else {
             System.out.println("Film not found.");
         }
-    }
-
-    // Format revenue to avoid scientific notation and improve output
-    private String formatRevenue(double revenue) {
-        DecimalFormat df = new DecimalFormat("#,###.00");
-        return df.format(revenue);
     }
 
     public double getAverageRating(int uniqueFilmID) {
@@ -93,18 +80,9 @@ public class ViewerFeedbackSystem {
     }
 
     public void displayPopularityRanking() {
-        System.out.println("\n==================== Film Popularity Rankings ====================");
         for (int i = 0; i < popularityRanking.size(); i++) {
             Film film = popularityRanking.get(i);
-            double avgRating = getAverageRating(film.getUniqueFilmID());
-            int reviewCount = getReviewCount(film.getUniqueFilmID());
-            System.out.printf("%d. %-30s - Avg Rating: %.2f - Total Reviews: %d\n",
-                    (i + 1),
-                    film.getFilmName(),
-                    avgRating,
-                    reviewCount);
+            System.out.println(film.getFilmName() + " - Average Rating: " + getAverageRating(film.getUniqueFilmID()));
         }
-        System.out.println("====================================================================\n");
     }
-
 }
